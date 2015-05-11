@@ -142,11 +142,11 @@ class DropDown extends Control
         return $item;
     }
 
-    public function addButton()
+    public function addButton($text = NULL)
     {
         $button = new Item;
-        $this->items[] = $button;
-        return $button;
+        $button->setText($text);
+        return $this->items[] = $button;
     }
 
     public function getItems()
