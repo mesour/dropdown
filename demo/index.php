@@ -15,13 +15,13 @@ define('SRC_DIR', __DIR__ . '/../src/');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+@mkdir(__DIR__ . '/log');
+
 \Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT, __DIR__ . '/log');
 
 require_once SRC_DIR . 'DropDown.php';
 require_once SRC_DIR . 'DropDown/MainButton.php';
 require_once SRC_DIR . 'DropDown/Item.php';
-
-\Mesour\UI\Control::$default_link = new \Mesour\Components\Link\Link();
 
 ?>
 

@@ -71,7 +71,7 @@ class DropDown extends Control
         self::DEFAULTS => array()
     );
 
-    public function __construct($name = NULL, Components\IComponent $parent = NULL)
+    public function __construct($name = NULL, Components\IContainer $parent = NULL)
     {
         parent::__construct($name, $parent);
         $this->option = self::$defaults;
