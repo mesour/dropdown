@@ -1,9 +1,10 @@
 <?php
 /**
- * Mesour component - DropDown
+ * This file is part of the Mesour Button (http://components.mesour.com/component/button)
  *
- * @license LGPL-3.0 and BSD-3-Clause
- * @copyright (c) 2015 Matous Nemec <http://mesour.com>
+ * Copyright (c) 2015 Matouš Němec (http://mesour.com)
+ *
+ * For full licence and copyright please view the file licence.md in root of this project
  */
 
 namespace Mesour\UI;
@@ -13,8 +14,7 @@ use Mesour\DropDown\Item;
 use Mesour\DropDown\MainButton;
 
 /**
- * @author mesour <http://mesour.com>
- * @package Mesour component - DropDown
+ * @author Matouš Němec <matous.nemec@mesour.com>
  */
 class DropDown extends Control
 {
