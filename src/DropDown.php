@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Mesour Button (http://components.mesour.com/component/button)
+ * This file is part of the Mesour DropDown (http://components.mesour.com/component/button)
  *
  * Copyright (c) 2015 Matouš Němec (http://mesour.com)
  *
