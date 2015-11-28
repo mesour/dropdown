@@ -7,8 +7,6 @@
 
 - With [Composer](https://getcomposer.org)
 
-        "require": {
-            "mesour/dropdown": "dev-master"
-        }
+        composer require mesour/dropdown
 
 - Or download source from [GitHub](https://github.com/mesour/DropDown/releases)
