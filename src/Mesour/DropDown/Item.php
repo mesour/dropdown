@@ -19,13 +19,11 @@ class Item extends Mesour\UI\Button
 
     public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
     {
-        parent::__construct($name, $parent);
+        $this->defaults[self::WRAPPER]['attributes']['class'] = FALSE;
+        $this->defaults[self::WRAPPER]['attributes']['role'] = 'menuitem';
+        $this->defaults[self::WRAPPER]['attributes']['tabindex'] = '-1';
 
-        $options = $this->getOption(self::WRAPPER);
-        $options['attributes']['class'] = FALSE;
-        $options['attributes']['role'] = 'menuitem';
-        $options['attributes']['tabindex'] = '-1';
-        $this->setOption(self::WRAPPER, $options);
+        parent::__construct($name, $parent);
     }
 
 }

@@ -19,12 +19,10 @@ class MainButton extends Mesour\UI\Button
 
     public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
     {
-        parent::__construct($name, $parent);
+        $this->defaults[self::WRAPPER]['el'] = 'button';
+        $this->defaults[self::WRAPPER]['attributes']['data-toggle'] = 'dropdown';
 
-        $options = $this->getOption(self::WRAPPER);
-        $options['el'] = 'button';
-        $options['attributes']['data-toggle'] = 'dropdown';
-        $this->setOption(self::WRAPPER, $options);
+        parent::__construct($name, $parent);
     }
 
 }
