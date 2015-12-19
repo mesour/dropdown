@@ -9,20 +9,23 @@
 
 namespace Mesour\DropDown;
 
-use Mesour\Components;
-use Mesour\UI\Button;
+use Mesour;
 
 /**
  * @author Matouš Němec <matous.nemec@mesour.com>
  */
-class Item extends Button
+class Item extends Mesour\UI\Button
 {
-    public function __construct($name = NULL, Components\IContainer $parent = NULL)
+
+    public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
     {
         parent::__construct($name, $parent);
-        $this->option[self::WRAPPER]['attributes']['class'] = FALSE;
-        $this->option[self::WRAPPER]['attributes']['role'] = 'menuitem';
-        $this->option[self::WRAPPER]['attributes']['tabindex'] = '-1';
+
+        $options = $this->getOption(self::WRAPPER);
+        $options['attributes']['class'] = FALSE;
+        $options['attributes']['role'] = 'menuitem';
+        $options['attributes']['tabindex'] = '-1';
+        $this->setOption(self::WRAPPER, $options);
     }
 
 }

@@ -9,108 +9,116 @@
 
 namespace Mesour\UI;
 
-use Mesour\Components;
-use Mesour\DropDown\Item;
-use Mesour\DropDown\MainButton;
+use Mesour;
 
 /**
  * @author Matouš Němec <matous.nemec@mesour.com>
+ *
+ * @method null onRender(DropDown $dropDown)
+ * @method Mesour\Components\Control\IControl current()
  */
-class DropDown extends Control
+class DropDown extends Mesour\Components\Control\AttributesControl
 {
+
     const WRAPPER = 'wrapper',
         CARET = 'caret',
         DEFAULTS = 'defaults',
         MENU = 'menu',
         MENU_ITEM = 'menu_item',
-        ITEMS = 'items',
-        ICON = 'icon';
+        ITEMS = 'items';
 
     /**
-     * @var Components\Html
-     */
-    private $wrapper;
-
-    /**
-     * @var Components\Html
+     * @var Mesour\Components\Utils\Html
      */
     private $menu;
 
-    private $items = array();
+    private $disabled = FALSE;
 
-    public $onRender = array();
+    private $items = [];
 
-    private $option = array();
+    public $onRender = [];
 
-    static public $defaults = array(
+    protected $defaults = [
         self::CARET => '&nbsp;<span class="caret"></span>',
-        self::WRAPPER => array(
+        self::WRAPPER => [
             'el' => 'div',
-            'attributes' => array(
+            'attributes' => [
                 'class' => 'dropdown',
-            )
-        ),
-        self::MENU => array(
+            ]
+        ],
+        self::MENU => [
             'el' => 'ul',
-            'attributes' => array(
+            'attributes' => [
                 'class' => 'dropdown-menu',
                 'role' => 'menu'
-            )
-        ),
-        self::MENU_ITEM => array(
+            ]
+        ],
+        self::MENU_ITEM => [
             'el' => 'li',
-            'attributes' => array(
+            'attributes' => [
                 'role' => 'presentation'
-            )
-        ),
-        self::ITEMS => array(
+            ]
+        ],
+        self::ITEMS => [
             'header_class' => 'dropdown-header',
             'button_class' => '',
             'divider_class' => 'divider'
-        ),
-        self::DEFAULTS => array()
-    );
+        ],
+        self::DEFAULTS => []
+    ];
 
-    public function __construct($name = NULL, Components\IContainer $parent = NULL)
+    public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
     {
         parent::__construct($name, $parent);
-        $this->option = self::$defaults;
-        $this['mainButton'] = new MainButton;
+
+        $this['mainButton'] = new Mesour\DropDown\MainButton();
+
+        $this->setHtmlElement(Mesour\Components\Utils\Html::el(
+            $this->getOption(self::WRAPPER, 'el'),
+            $this->getOption(self::WRAPPER, 'attributes')
+        ));
+
+        $this->addComponent(new Control, 'items');
     }
 
     /**
-     * @return Components\Html
+     * @return Mesour\Components\Utils\Html
      */
     public function getControlPrototype()
     {
-        return !$this->wrapper ? ($this->wrapper = Components\Html::el($this->option[self::WRAPPER]['el'])) : $this->wrapper;
+        return $this->getHtmlElement();
     }
 
     /**
-     * @return Components\Html
+     * @return Mesour\Components\Utils\Html
      */
     public function getMenuPrototype()
     {
-        return !$this->menu ? ($this->menu = Components\Html::el($this->option[self::MENU]['el'])) : $this->menu;
+        return !$this->menu
+            ? ($this->menu = Mesour\Components\Utils\Html::el($this->getOption(self::MENU, 'el')))
+            : $this->menu;
     }
 
-    /**
-     * @return Components\Html
-     */
-    protected function getMenuItemPrototype()
+    public function setDisabled($disabled = TRUE)
     {
-        return Components\Html::el($this->option[self::MENU_ITEM]['el'], $this->option[self::MENU_ITEM]['attributes']);
+        $this->disabled = (bool)$disabled;
+        return $this;
+    }
+
+    public function isDisabled()
+    {
+        return $this->disabled;
     }
 
     /**
      * @param $text
      * @param array $attributes
-     * @return Components\Html
+     * @return Mesour\Components\Utils\Html
      */
-    public function addHeader($text, array $attributes = array())
+    public function addHeader($text, array $attributes = [])
     {
         $item = $this->getMenuItemPrototype();
-        $class = $this->option[self::ITEMS]['header_class'];
+        $class = $this->getOption(self::ITEMS, 'header_class');
         if (isset($attributes['class'])) {
             $class .= ' ' . $attributes['class'];
             unset($attributes['class']);
@@ -119,18 +127,18 @@ class DropDown extends Control
         $item->setText($this->getTranslator()->translate($text));
         $item->addAttributes($attributes);
 
-        $this->items[] = $item;
+        $this->items[$this->getItemsCount() + 1] = $item;
         return $item;
     }
 
     /**
      * @param array $attributes
-     * @return Components\Html
+     * @return Mesour\Components\Utils\Html
      */
-    public function addDivider(array $attributes = array())
+    public function addDivider(array $attributes = [])
     {
         $item = $this->getMenuItemPrototype();
-        $class = $this->option[self::ITEMS]['divider_class'];
+        $class = $this->getOption(self::ITEMS, 'divider_class');
         if (isset($attributes['class'])) {
             $class .= ' ' . $attributes['class'];
             unset($attributes['class']);
@@ -138,80 +146,176 @@ class DropDown extends Control
         $item->class($class);
         $item->addAttributes($attributes);
 
-        $this->items[] = $item;
+        $this->items[$this->getItemsCount() + 1] = $item;
         return $item;
     }
 
     public function addButton($text = NULL)
     {
-        $button = new Item;
+        $button = new Mesour\DropDown\Item;
         $button->setText($text);
-        return $this->items[] = $button;
+        return $this['items'][$this->getItemsCount() + 1] = $button;
     }
 
-    public function getItems()
+    protected function getItemsCount()
     {
-        return $this->items;
+        return count($this->items) + count($this['items']);
     }
 
     /**
-     * @return MainButton
+     * @return Mesour\DropDown\Item[]
+     */
+    public function getItems()
+    {
+        $out = [];
+
+        $count = $this->getItemsCount();
+        for ($i = 1; $i <= $count; $i++) {
+            if (isset($this->items[$i])) {
+                $out[] = $this->items[$i];
+            } elseif (isset($this['items'][$i])) {
+                $out[] = $this['items'][$i];
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * @return Mesour\DropDown\MainButton
      */
     public function getMainButton()
     {
         return $this['mainButton'];
     }
 
-    public function create($data = array())
+    public function create()
     {
         parent::create();
 
         $id = uniqid();
 
-        $option_data = $this->option[self::DEFAULTS];
         $wrapper = $this->getControlPrototype();
-        $this->wrapper = clone $wrapper;
+        $oldWrapper = clone $wrapper;
         $menu = $this->getMenuPrototype();
-        $this->menu = clone $menu;
+        $oldMenu = clone $menu;
 
-        $this->onRender($this, $data);
+        $this->onRender($this);
 
-        foreach ($this->option[self::WRAPPER]['attributes'] as $key => $value) {
-            if (!$this->wrapper->{$key} && $this->wrapper->{$key} !== FALSE) {
-                $this->wrapper->{$key}(trim(Components\Helper::parseValue($value, $option_data)));
+        $optionData = $this->getOption(self::DEFAULTS);
+
+        foreach ($this->getOption(self::WRAPPER, 'attributes') as $key => $value) {
+            if (!$wrapper->{$key} && $wrapper->{$key} !== FALSE) {
+                $wrapper->{$key}(trim(Mesour\Components\Utils\Helpers::parseValue($value, $optionData)));
             }
         }
 
         $main = $this->getMainButton();
+        $main->setOption('data', $this->getOption('data'));
 
         $main->setAttribute('id', $id);
 
-        $this->wrapper->add($main->create($data)->add($this->option[self::CARET]));
-
-        foreach ($this->option[self::MENU]['attributes'] as $key => $value) {
-            if (!$this->menu->{$key}) {
-                $this->menu->{$key}(Components\Helper::parseValue($value, $option_data));
+        foreach ($this->getOption(self::MENU, 'attributes') as $key => $value) {
+            if (!$menu->{$key}) {
+                $menu->{$key}(Mesour\Components\Utils\Helpers::parseValue($value, $optionData));
             }
         }
-        $this->menu->addAttributes(array('aria-labelledby' => $id));
+        $menu->addAttributes(['aria-labelledby' => $id]);
 
-        foreach ($this->items as $item) {
-            if ($item instanceof Item) {
-                $_item = $this->getMenuItemPrototype();
-                $_item->class($this->option[self::ITEMS]['button_class']);
-                $_item->add($item->create($data));
-                $this->menu->add($_item);
-            } else {
-                $this->menu->add($item);
+        if(!$this->isDisabled()) {
+            $isFirst = TRUE;
+            $items = $this->getItems();
+            foreach ($items as $key => $item) {
+                if ($item instanceof Mesour\DropDown\Item) {
+                    if (!$item->isAllowed()) {
+                        continue;
+                    }
+                    $item->setOption('data', $this->getOption('data'));
+                    $_item = $this->getMenuItemPrototype();
+                    $_item->class($this->getOption(self::ITEMS, 'button_class'));
+                    $_item->add($item->create());
+                    $menu->add($_item);
+                    $isFirst = FALSE;
+                } else {
+                    $isNext = FALSE;
+                    if (isset($items[$key + 1]) && $isNext = $this->isSomeNext($items, $key + 1)) {
+                        $menu->add($item);
+                        $isFirst = FALSE;
+                    }
+                    if (
+                        !$isNext
+                        && ($this->isDivider($items[$key]) && !$isFirst)
+                        && $this->isHeader($items[$key + 1])
+                        && (isset($items[$key + 2]) && $this->isSomeNext($items, $key + 2))
+                    ) {
+                        $menu->add($item);
+                        $isFirst = FALSE;
+                    }
+
+                }
             }
+            if($isFirst) {
+                $main->setDisabled();
+            }
+        } else {
+            $main->setDisabled();
         }
 
-        $this->wrapper->add($this->menu);
+        $wrapper->add($main->create()->add($this->getOption(self::CARET)));
 
-        $out = $this->wrapper;
-        $this->menu = $menu;
-        $this->wrapper = $wrapper;
+        $wrapper->add($menu);
+
+        $out = $wrapper;
+
+        $this->menu = $oldMenu;
+        $this->setHtmlElement($oldWrapper);
+
         return $out;
+    }
+
+    /**
+     * @return Mesour\Components\Utils\Html
+     */
+    protected function getMenuItemPrototype()
+    {
+        return Mesour\Components\Utils\Html::el(
+            $this->getOption(self::MENU_ITEM, 'el'),
+            $this->getOption(self::MENU_ITEM, 'attributes')
+        );
+    }
+
+    protected function isDivider($item)
+    {
+        return isset($item->class) && strpos($item->class, 'divider') !== FALSE;
+    }
+
+    protected function isHeader($item)
+    {
+        return !$this->isDivider($item) && !$this->isLink($item);
+    }
+
+    protected function isLink($item)
+    {
+        return $item instanceof Mesour\DropDown\Item;
+    }
+
+    protected function isActiveLink($item)
+    {
+        /** @var Mesour\DropDown\Item $item */
+        return $this->isLink($item) && $item->isAllowed();
+    }
+
+    protected function isSomeNext($items, $currentKey)
+    {
+        for ($i = $currentKey; $i < count($items); $i++) {
+            if (!$this->isHeader($items[$i]) && !$this->isDivider($items[$i])) {
+                if ($this->isActiveLink($items[$i])) {
+                    return TRUE;
+                }
+            } else {
+                return FALSE;
+            }
+        }
+        return FALSE;
     }
 
 }
