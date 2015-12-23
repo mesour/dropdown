@@ -34,6 +34,8 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
     private $disabled = FALSE;
 
+    protected $hasPullRight = FALSE;
+
     private $items = [];
 
     public $onRender = [];
@@ -102,6 +104,12 @@ class DropDown extends Mesour\Components\Control\AttributesControl
     public function setDisabled($disabled = TRUE)
     {
         $this->disabled = (bool)$disabled;
+        return $this;
+    }
+
+    public function setPullRight($hasPullRight = TRUE)
+    {
+        $this->hasPullRight = (bool)$hasPullRight;
         return $this;
     }
 
@@ -203,9 +211,13 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
         $optionData = $this->getOption(self::DEFAULTS);
 
+        if ($this->hasPullRight) {
+            $wrapper->class = $wrapper->class . ' pull-right';
+        }
+
         foreach ($this->getOption(self::WRAPPER, 'attributes') as $key => $value) {
             if (!$wrapper->{$key} && $wrapper->{$key} !== FALSE) {
-                $wrapper->{$key}(trim(Mesour\Components\Utils\Helpers::parseValue($value, $optionData)));
+                $menu->addAttributes([$key => trim(Mesour\Components\Utils\Helpers::parseValue($value, $optionData))]);
             }
         }
 
@@ -216,12 +228,13 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
         foreach ($this->getOption(self::MENU, 'attributes') as $key => $value) {
             if (!$menu->{$key}) {
-                $menu->{$key}(Mesour\Components\Utils\Helpers::parseValue($value, $optionData));
+                $menu->addAttributes([$key => Mesour\Components\Utils\Helpers::parseValue($value, $optionData)]);
             }
         }
         $menu->addAttributes(['aria-labelledby' => $id]);
+        $menu->addAttributes(['class' => $menu->class . ' dropdown-menu-right']);
 
-        if(!$this->isDisabled()) {
+        if (!$this->isDisabled()) {
             $isFirst = TRUE;
             $items = $this->getItems();
             foreach ($items as $key => $item) {
@@ -253,7 +266,7 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
                 }
             }
-            if($isFirst) {
+            if ($isFirst) {
                 $main->setDisabled();
             }
         } else {

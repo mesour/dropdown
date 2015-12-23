@@ -1,10 +1,10 @@
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="resources/js/jquery.min.js"></script>
-<script src="resources/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <?php
 
@@ -43,7 +43,7 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
         $auth->allow('registered', 'menu');
         $auth->deny('registered', 'menu', 'second');
 
-        $userRole = 'registered';
+        $container->setUserRole('registered');
 
         $dropDown = new \Mesour\UI\DropDown('testDropDown', $container);
 
@@ -100,7 +100,7 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
         $first = $dropDown->addButton();
 
         $first->setText('First button')
-            ->setPermission($userRole, 'menu', 'second')
+            ->setPermission('menu', 'second')
             ->setAttribute('href', $dropDown->link('/first/'));
 
         $dropDown->addDivider();
@@ -114,7 +114,7 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
 
         $dropDown->addButton()
             ->setText('Third button')
-            ->setPermission($userRole, 'menu', 'second')
+            ->setPermission('menu', 'second')
             ->setAttribute('href', $dropDown->link('/third/'));
 
         $dropDown->addDivider();
@@ -132,7 +132,7 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
 
         $dropDown->addButton()
             ->setText('Sixth button')
-            ->setPermission($userRole, 'menu', 'second')
+            ->setPermission('menu', 'second')
             ->setAttribute('href', $dropDown->link('/third/'));
 
         $mainButton = $dropDown->getMainButton();
@@ -151,7 +151,7 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
         $first = $dropDown->addButton();
 
         $first->setText('First button')
-            ->setPermission($userRole, 'menu', 'second')
+            ->setPermission('menu', 'second')
             ->setAttribute('href', $dropDown->link('/first/'));
 
         $mainButton = $dropDown->getMainButton();
@@ -180,6 +180,28 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
             ->setType('warning');
 
         echo $dropDown->render();
+
+        echo '<br><hr><br>';
+
+        $dropDown = new \Mesour\UI\DropDown('testDropDown4', $container);
+
+        $dropDown->setPullRight();
+
+        $dropDown->addHeader('Test header');
+
+        $first = $dropDown->addButton();
+
+        $first->setText('First button')
+            ->setAttribute('href', $dropDown->link('/first/'));
+
+        $mainButton = $dropDown->getMainButton();
+
+        $mainButton->setText('Pull right')
+            ->setType('warning');
+
+        echo $dropDown->render();
+
+        echo '<br style="clear: both;">';
 
         ?>
     </div>
