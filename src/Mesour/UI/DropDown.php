@@ -232,7 +232,9 @@ class DropDown extends Mesour\Components\Control\AttributesControl
             }
         }
         $menu->addAttributes(['aria-labelledby' => $id]);
-        $menu->addAttributes(['class' => $menu->class . ' dropdown-menu-right']);
+        if ($this->hasPullRight) {
+            $menu->addAttributes(['class' => $menu->class . ' dropdown-menu-right']);
+        }
 
         if (!$this->isDisabled()) {
             $isFirst = TRUE;
