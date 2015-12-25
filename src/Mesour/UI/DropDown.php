@@ -211,10 +211,6 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
         $optionData = $this->getOption(self::DEFAULTS);
 
-        if ($this->hasPullRight) {
-            $wrapper->class = $wrapper->class . ' pull-right';
-        }
-
         foreach ($this->getOption(self::WRAPPER, 'attributes') as $key => $value) {
             if (!$wrapper->{$key} && $wrapper->{$key} !== FALSE) {
                 $menu->addAttributes([$key => trim(Mesour\Components\Utils\Helpers::parseValue($value, $optionData))]);
