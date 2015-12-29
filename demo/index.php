@@ -87,7 +87,8 @@ require_once SRC_DIR . 'Mesour/DropDown/Item.php';
         $mainButton = $dropDown->getMainButton();
 
         $mainButton->setText('Actions (enabled all)')
-            ->setType('danger');
+            ->setType('danger')
+            ->setIcon();
 
         echo $dropDown->render();
 
