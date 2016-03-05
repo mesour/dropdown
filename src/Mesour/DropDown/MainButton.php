@@ -17,12 +17,12 @@ use Mesour;
 class MainButton extends Mesour\UI\Button
 {
 
-    public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
-    {
-        $this->defaults[self::WRAPPER]['el'] = 'button';
-        $this->defaults[self::WRAPPER]['attributes']['data-toggle'] = 'dropdown';
+	public function __construct($name = null, Mesour\Components\ComponentModel\IContainer $parent = null)
+	{
+		$this->defaults[self::WRAPPER]['el'] = 'button';
+		$this->defaults[self::WRAPPER]['attributes']['data-toggle'] = 'dropdown';
 
-        parent::__construct($name, $parent);
-    }
+		parent::__construct($name, $parent);
+	}
 
 }

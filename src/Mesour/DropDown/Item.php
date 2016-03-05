@@ -17,13 +17,13 @@ use Mesour;
 class Item extends Mesour\UI\Button
 {
 
-    public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
-    {
-        $this->defaults[self::WRAPPER]['attributes']['class'] = FALSE;
-        $this->defaults[self::WRAPPER]['attributes']['role'] = 'menuitem';
-        $this->defaults[self::WRAPPER]['attributes']['tabindex'] = '-1';
+	public function __construct($name = null, Mesour\Components\ComponentModel\IContainer $parent = null)
+	{
+		$this->defaults[self::WRAPPER]['attributes']['class'] = false;
+		$this->defaults[self::WRAPPER]['attributes']['role'] = 'menuitem';
+		$this->defaults[self::WRAPPER]['attributes']['tabindex'] = '-1';
 
-        parent::__construct($name, $parent);
-    }
+		parent::__construct($name, $parent);
+	}
 
 }
