@@ -12,7 +12,7 @@ namespace Mesour\DropDown;
 use Mesour;
 
 /**
- * @author Matouš Němec <matous.nemec@mesour.com>
+ * @author Matouš Němec (http://mesour.com)
  */
 class Item extends Mesour\UI\Button
 {

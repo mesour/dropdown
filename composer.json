@@ -2,8 +2,8 @@
   "name": "mesour/dropdown",
   "description": "Mesour DropDown component.",
   "license": ["BSD-3-Clause","GPL-2.0","GPL-3.0"],
-  "keywords": ["button","component"],
-  "homepage": "http://mesour.com",
+  "keywords": ["dropdown","component"],
+  "homepage": "http://components.mesour.com/version3/component/drop-down/",
   "authors": [{
       "name": "Matouš Němec",
       "homepage": "http://mesour.com"
