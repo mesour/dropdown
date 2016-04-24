@@ -32,6 +32,11 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 	 */
 	private $menu;
 
+	/**
+	 * @var Mesour\DropDown\RandomString\IRandomStringGenerator
+	 */
+	private $randomStringGenerator;
+
 	private $disabled = false;
 
 	protected $hasPullRight = false;
@@ -75,10 +80,12 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
 		$this['mainButton'] = new Mesour\DropDown\MainButton();
 
-		$this->setHtmlElement(Mesour\Components\Utils\Html::el(
-			$this->getOption(self::WRAPPER, 'el'),
-			$this->getOption(self::WRAPPER, 'attributes')
-		));
+		$this->setHtmlElement(
+			Mesour\Components\Utils\Html::el(
+				$this->getOption(self::WRAPPER, 'el'),
+				$this->getOption(self::WRAPPER, 'attributes')
+			)
+		);
 
 		$this->addComponent(new Control, 'items');
 	}
@@ -103,13 +110,13 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 
 	public function setDisabled($disabled = true)
 	{
-		$this->disabled = (bool)$disabled;
+		$this->disabled = (bool) $disabled;
 		return $this;
 	}
 
 	public function setPullRight($hasPullRight = true)
 	{
-		$this->hasPullRight = (bool)$hasPullRight;
+		$this->hasPullRight = (bool) $hasPullRight;
 		return $this;
 	}
 
@@ -119,7 +126,7 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 	}
 
 	/**
-	 * @param $text
+	 * @param string $text
 	 * @param array $attributes
 	 * @return Mesour\Components\Utils\Html
 	 */
@@ -196,11 +203,24 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 		return $this['mainButton'];
 	}
 
+	public function setRandomStringGenerator(Mesour\DropDown\RandomString\IRandomStringGenerator $randomStringGenerator)
+	{
+		$this->randomStringGenerator = $randomStringGenerator;
+	}
+
+	public function getRandomStringGenerator()
+	{
+		if (!$this->randomStringGenerator) {
+			$this->randomStringGenerator = new Mesour\DropDown\RandomString\DefaultRandomStringGenerator();
+		}
+		return $this->randomStringGenerator;
+	}
+
 	public function create()
 	{
 		parent::create();
 
-		$id = uniqid();
+		$id = $this->getRandomStringGenerator()->generate();
 
 		$wrapper = $this->getControlPrototype();
 		$oldWrapper = clone $wrapper;
@@ -241,14 +261,15 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 						continue;
 					}
 					$item->setOption('data', $this->getOption('data'));
-					$_item = $this->getMenuItemPrototype();
-					$_item->class($this->getOption(self::ITEMS, 'button_class'));
-					$_item->add($item->create());
-					$menu->add($_item);
+					$currentItem = $this->getMenuItemPrototype();
+					$currentItem->class($this->getOption(self::ITEMS, 'button_class'));
+					$currentItem->add($item->create());
+					$menu->add($currentItem);
 					$isFirst = false;
 				} else {
-					$isNext = false;
-					if (isset($items[$key + 1]) && $isNext = $this->isSomeNext($items, $key + 1)) {
+					$isNext = $this->isSomeNext($items, $key + 1);
+					if (isset($items[$key + 1]) && $isNext) {
+						$isNext = $this->isSomeNext($items, $key + 1);
 						$menu->add($item);
 						$isFirst = false;
 					}
@@ -261,7 +282,6 @@ class DropDown extends Mesour\Components\Control\AttributesControl
 						$menu->add($item);
 						$isFirst = false;
 					}
-
 				}
 			}
 			if ($isFirst) {

@@ -8,13 +8,15 @@ define('SRC_DIR', __DIR__ . '/../src/');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+@mkdir(__DIR__ . '/tmp');
 @mkdir(__DIR__ . '/log');
 
 \Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT, __DIR__ . '/log');
 
-require_once SRC_DIR . 'Mesour/UI/DropDown.php';
-require_once SRC_DIR . 'Mesour/DropDown/MainButton.php';
-require_once SRC_DIR . 'Mesour/DropDown/Item.php';
+$loader = new Nette\Loaders\RobotLoader;
+$loader->addDirectory(__DIR__ . '/../src');
+$loader->setCacheStorage(new Nette\Caching\Storages\FileStorage(__DIR__ . '/tmp'));
+$loader->register();
 
 ?>
 

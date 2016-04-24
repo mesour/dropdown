@@ -1,6 +1,10 @@
 .idea
 /vendor
 /composer.lock
+/examples/log
+/examples/tmp
 /tests/tmp
 /tests/log
+/tests/environment.php
+/tests/Mesour/IconTests/output
 /demo/log
