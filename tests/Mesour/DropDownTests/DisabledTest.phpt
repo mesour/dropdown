@@ -13,7 +13,7 @@ class DisabledTest extends BaseTestCase
 
 	public function testDefault()
 	{
-		$container = new \Mesour\UI\Control;
+		$container = $this->createApplication();
 
 		$dropDown = new \Mesour\UI\DropDown('testDropDown3', $container);
 

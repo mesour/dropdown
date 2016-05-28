@@ -17,6 +17,13 @@ class BaseTestCase extends TestCase
 	 */
 	protected $randomStringGenerator;
 
+	protected function createApplication()
+	{
+		$app = new \Mesour\UI\Application;
+		$app->setRequest([]);
+		return $app;
+	}
+
 	public function setUp()
 	{
 		parent::setUp();

@@ -10,6 +10,8 @@
 namespace Mesour\UI;
 
 use Mesour;
+use Mesour\Components\Localization\ITranslatable;
+use Mesour\Components\Security\IAuthorised;
 
 /**
  * @author Matouš Němec (http://mesour.com)
@@ -17,8 +19,11 @@ use Mesour;
  * @method null onRender(DropDown $dropDown)
  * @method Mesour\Components\Control\IControl current()
  */
-class DropDown extends Mesour\Components\Control\AttributesControl
+class DropDown extends Mesour\Components\Control\AttributesControl implements ITranslatable, IAuthorised
 {
+
+	use Mesour\Components\Localization\Translatable;
+	use Mesour\Components\Security\Authorised;
 
 	const WRAPPER = 'wrapper',
 		CARET = 'caret',
