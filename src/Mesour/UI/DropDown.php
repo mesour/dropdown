@@ -11,6 +11,7 @@ namespace Mesour\UI;
 
 use Mesour;
 use Mesour\Components\Localization\ITranslatable;
+use Mesour\Components\RandomString\IRandomString;
 use Mesour\Components\Security\IAuthorised;
 
 /**
@@ -19,10 +20,11 @@ use Mesour\Components\Security\IAuthorised;
  * @method null onRender(DropDown $dropDown)
  * @method Mesour\Components\Control\IControl current()
  */
-class DropDown extends Mesour\Components\Control\AttributesControl implements ITranslatable, IAuthorised
+class DropDown extends Mesour\Components\Control\AttributesControl implements ITranslatable, IAuthorised, IRandomString
 {
 
 	use Mesour\Components\Localization\Translatable;
+	use Mesour\Components\RandomString\RandomString;
 	use Mesour\Components\Security\Authorised;
 
 	const WRAPPER = 'wrapper',
@@ -36,11 +38,6 @@ class DropDown extends Mesour\Components\Control\AttributesControl implements IT
 	 * @var Mesour\Components\Utils\Html
 	 */
 	private $menu;
-
-	/**
-	 * @var Mesour\DropDown\RandomString\IRandomStringGenerator
-	 */
-	private $randomStringGenerator;
 
 	private $disabled = false;
 
@@ -206,19 +203,6 @@ class DropDown extends Mesour\Components\Control\AttributesControl implements IT
 	public function getMainButton()
 	{
 		return $this['mainButton'];
-	}
-
-	public function setRandomStringGenerator(Mesour\DropDown\RandomString\IRandomStringGenerator $randomStringGenerator)
-	{
-		$this->randomStringGenerator = $randomStringGenerator;
-	}
-
-	public function getRandomStringGenerator()
-	{
-		if (!$this->randomStringGenerator) {
-			$this->randomStringGenerator = new Mesour\DropDown\RandomString\DefaultRandomStringGenerator();
-		}
-		return $this->randomStringGenerator;
 	}
 
 	public function create()

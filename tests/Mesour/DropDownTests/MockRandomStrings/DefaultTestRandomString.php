@@ -2,7 +2,7 @@
 
 namespace Mesour\DropDownTests\MockRandomStrings;
 
-use Mesour\DropDown\RandomString\MockRandomStringGenerator;
+use Mesour\Components\RandomString\MockRandomStringGenerator;
 
 class DefaultTestRandomString extends MockRandomStringGenerator
 {

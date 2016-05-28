@@ -28,9 +28,12 @@ $loader->register();
 	<div class="jumbotron">
 		<?php
 
-		$container = new \Mesour\UI\Control;
+		$application = new \Mesour\UI\Application();
+		$application->setRequest([]);
 
-		$auth = $container->getAuthorizator();
+		$dropDown = new \Mesour\UI\DropDown('testDropDown', $application);
+
+		$auth = $dropDown->getAuthorizator();
 
 		$auth->addRole('guest');
 		$auth->addRole('registered', 'guest');
@@ -41,9 +44,9 @@ $loader->register();
 		$auth->allow('registered', 'menu');
 		$auth->deny('registered', 'menu', 'second');
 
-		$container->setUserRole('registered');
+		$application->setUserRole('registered');
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown', $container);
+
 
 		$dropDown->addHeader('Test header');
 
@@ -92,7 +95,7 @@ $loader->register();
 
 		echo '<br><hr><br>';
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown0', $container);
+		$dropDown = new \Mesour\UI\DropDown('testDropDown0', $application);
 
 		$dropDown->addHeader('Test header');
 
@@ -143,7 +146,7 @@ $loader->register();
 
 		echo '<br><hr><br>';
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown2', $container);
+		$dropDown = new \Mesour\UI\DropDown('testDropDown2', $application);
 
 		$dropDown->addHeader('Test header');
 
@@ -162,7 +165,7 @@ $loader->register();
 
 		echo '<br><hr><br>';
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown3', $container);
+		$dropDown = new \Mesour\UI\DropDown('testDropDown3', $application);
 
 		$dropDown->setDisabled();
 
@@ -182,7 +185,7 @@ $loader->register();
 
 		echo '<br><hr><br>';
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown4', $container);
+		$dropDown = new \Mesour\UI\DropDown('testDropDown4', $application);
 
 		$dropDown->getControlPrototype()
 			->style('float:right;');

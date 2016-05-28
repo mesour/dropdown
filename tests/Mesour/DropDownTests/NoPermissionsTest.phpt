@@ -30,8 +30,6 @@ class NoPermissionsTest extends BaseTestCase
 		$auth->allow('registered', 'menu');
 		$auth->deny('registered', 'menu', 'second');
 
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->addHeader('Test header');
 
 		$first = $dropDown->addButton();

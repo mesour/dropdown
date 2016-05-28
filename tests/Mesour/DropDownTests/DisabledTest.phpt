@@ -17,8 +17,6 @@ class DisabledTest extends BaseTestCase
 
 		$dropDown = new \Mesour\UI\DropDown('testDropDown3', $container);
 
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->setDisabled();
 
 		$dropDown->addHeader('Test header');

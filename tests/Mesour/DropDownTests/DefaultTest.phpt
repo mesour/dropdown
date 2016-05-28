@@ -19,8 +19,6 @@ class DefaultTest extends BaseTestCase
 
 		$dropDown = new \Mesour\UI\DropDown('testDropDown', $container);
 
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->addHeader('Test header');
 
 		$first = $dropDown->addButton();

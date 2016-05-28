@@ -17,8 +17,6 @@ class PullRightTest extends BaseTestCase
 
 		$dropDown = new \Mesour\UI\DropDown('testDropDown4', $container);
 
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->getControlPrototype()
 			->style('float:right;');
 

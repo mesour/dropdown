@@ -34,8 +34,6 @@ class EnabledSomeTest extends BaseTestCase
 
 		$dropDown = new \Mesour\UI\DropDown('testDropDown0', $application);
 
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->addHeader('Test header');
 
 		$first = $dropDown->addButton();
