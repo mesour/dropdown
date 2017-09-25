@@ -2,8 +2,8 @@
 
 namespace Mesour\DropDownTests;
 
-use Mesour\DropDown\RandomString\CapturingRandomStringGenerator;
-use Mesour\DropDown\RandomString\IRandomStringGenerator;
+use Mesour\Components\RandomString\CapturingRandomStringGenerator;
+use Mesour\Components\RandomString\IRandomStringGenerator;
 use Mesour\DropDownTests\MockRandomStrings\DefaultTestRandomString;
 use Tester\TestCase;
 
@@ -16,6 +16,14 @@ class BaseTestCase extends TestCase
 	 * @var IRandomStringGenerator|CapturingRandomStringGenerator
 	 */
 	protected $randomStringGenerator;
+
+	protected function createApplication()
+	{
+		$app = new \Mesour\UI\Application;
+		$app->setRequest([]);
+		$app->getContext()->setService($this->randomStringGenerator, IRandomStringGenerator::class);
+		return $app;
+	}
 
 	public function setUp()
 	{
@@ -35,7 +43,7 @@ class BaseTestCase extends TestCase
 		if ($this->generateRandomString) {
 			$this->randomStringGenerator->writeToPhpFile(
 				__DIR__ . '/MockRandomStrings/DefaultTestRandomString.php',
-				'Mesour\DropDownTests\MockRandomStrings\DefaultTestRandomString'
+				DefaultTestRandomString::class
 			);
 		}
 	}

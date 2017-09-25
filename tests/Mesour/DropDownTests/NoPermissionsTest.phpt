@@ -13,9 +13,13 @@ class NoPermissionsTest extends BaseTestCase
 
 	public function testDefault()
 	{
-		$container = new \Mesour\UI\Control;
+		$application = $this->createApplication();
 
-		$auth = $container->getAuthorizator();
+		$application->getUser()->setRoles('registered');
+
+		$dropDown = new \Mesour\UI\DropDown('testDropDown2', $application);
+
+		$auth = $dropDown->getAuthorizator();
 
 		$auth->addRole('guest');
 		$auth->addRole('registered', 'guest');
@@ -26,19 +30,13 @@ class NoPermissionsTest extends BaseTestCase
 		$auth->allow('registered', 'menu');
 		$auth->deny('registered', 'menu', 'second');
 
-		$container->setUserRole('registered');
-
-		$dropDown = new \Mesour\UI\DropDown('testDropDown2', $container);
-
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
-
 		$dropDown->addHeader('Test header');
 
 		$first = $dropDown->addButton();
 
-		$first->setText('First button')
-			->setPermission('menu', 'second')
-			->setAttribute('href', $dropDown->link('/first/'));
+		$firstButton = $first->setText('First button');
+		$firstButton->setPermission('menu', 'second');
+		$firstButton->setAttribute('href', $dropDown->link('/first/'));
 
 		$mainButton = $dropDown->getMainButton();
 

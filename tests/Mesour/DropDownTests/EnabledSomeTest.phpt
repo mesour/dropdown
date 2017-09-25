@@ -2,6 +2,8 @@
 
 namespace Mesour\DropDownTests;
 
+use Mesour\Components\Security\IAuthorizator;
+use Mesour\Components\Security\Permission;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -13,9 +15,11 @@ class EnabledSomeTest extends BaseTestCase
 
 	public function testDefault()
 	{
-		$container = new \Mesour\UI\Control;
+		$application = $this->createApplication();
 
-		$auth = $container->getAuthorizator();
+		/** @var IAuthorizator|Permission $auth */
+		$auth = new Permission();
+		$application->getContext()->setService($auth, IAuthorizator::class);
 
 		$auth->addRole('guest');
 		$auth->addRole('registered', 'guest');
@@ -26,11 +30,9 @@ class EnabledSomeTest extends BaseTestCase
 		$auth->allow('registered', 'menu');
 		$auth->deny('registered', 'menu', 'second');
 
-		$container->setUserRole('registered');
+		$application->setUserRole('registered');
 
-		$dropDown = new \Mesour\UI\DropDown('testDropDown0', $container);
-
-		$dropDown->setRandomStringGenerator($this->randomStringGenerator);
+		$dropDown = new \Mesour\UI\DropDown('testDropDown0', $application);
 
 		$dropDown->addHeader('Test header');
 
